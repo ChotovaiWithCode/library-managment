@@ -1,0 +1,25 @@
+#letter{
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto;
+    height: 41px;
+    width: 1000px;
+    gap: 15px;
+    
+}
+
+.list-item.active::before {
+    content: "→";
+    color: #0bd3ee;
+    position: absolute;
+    left: -20px;
+
+}
+
+.productCard{
+    height: 300px;
+    width: 250px;
+}
+.filter{
+    background-color: #0bd3ee;
+}
