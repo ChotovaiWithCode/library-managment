@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 include('database.php');
 
 $sql = "SELECT * FROM products";
@@ -164,4 +164,4 @@ $conn->close();
     <script src="library-page.js"></script>
 </body>
 
-</html>
+</html> -->

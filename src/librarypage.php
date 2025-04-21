@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+
+// Check if user is registered
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    header("Location: Seassionstart.php"); // Redirect to your registration page
+    exit();
+}
 include('database.php');
 
 // Search filter
@@ -6,10 +14,23 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%'  LIMIT 8";
 $result = $conn->query($sql);
 
+
 $products = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $products[] = $row;
+    }
+}
+
+// collection Search filter
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$collections = "SELECT * FROM transactions WHERE product_name LIKE '%$search%' OR description LIKE '%$search%'  LIMIT 8";
+$collresult = $conn->query($collections);
+$collection = [];
+
+if ($collresult->num_rows > 0) {
+    while ($row = $collresult->fetch_assoc()) {
+        $collection[] = $row;
     }
 }
 
@@ -29,13 +50,16 @@ $conn->close();
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="./custom.css" rel="stylesheet">
     <style>
-        .list-item.active::before {
-            content: "→";
-            color: #22d3ee;
-            position: absolute;
-            left: -20px;
-        }
+    .list-item.active::before {
+        content: "→";
+        color: #22d3ee;
+        position: absolute;
+        left: -20px;
+    }
     </style>
+
+
+
 </head>
 
 <body class="bg-gray-100 flex justify-center">
@@ -75,10 +99,18 @@ $conn->close();
                 Support
             </li>
             <li class="list-item w-[200px] h-[30px] cursor-pointer  transition-all duration-300 relative"
-                onclick="activateItem(this);toggleCategoryDetails('sair');">
-                Sair
+                onclick="activateItem(this);toggleCategoryDetails('collection');">
+                Collection
+            </li>
+
+        </ul>
+        <ul class="mt-96 space-y-3 text-lg text-gray-500">
+            <li id="logoutbtn" class="list-item w-[200px] h-[30px] cursor-pointer   relative"
+                onclick="window.location.href='logout.php'" ;>
+                Logout
             </li>
         </ul>
+
     </div>
 
     <!-- Right Part (Sections to Toggle) -->
@@ -110,8 +142,7 @@ $conn->close();
                 <input id="Titlebooks" name="search"
                     class="w-full p-4 text-2xl font-bold border border-gray-300 rounded-lg"
                     placeholder="Search your books" value="<?php echo htmlspecialchars($search); ?>" />
-                <button type="submit"
-                    class="absolute right-4 top-4 text-3xl cursor-pointer text-gray-500">
+                <button type="submit" class="absolute right-4 top-4 text-3xl cursor-pointer text-gray-500">
                     <i class='bx bx-search-alt-2'></i>
                 </button>
             </div>
@@ -120,37 +151,101 @@ $conn->close();
         <!-- Product Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             <?php if (empty($products)): ?>
-                <p class="text-center text-gray-600 col-span-full">No products found.</p>
+            <p class="text-center text-gray-600 col-span-full">No products found.</p>
             <?php else: ?>
-                <?php foreach ($products as $product): ?>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div class="flex items-center justify-center p-4">
-                            <img src="<?php echo htmlspecialchars($product['image']); ?>"
-                                alt="<?php echo htmlspecialchars($product['name']); ?>"
-                                class="h-48 w-36 object-cover">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-800">
-                                <?php echo htmlspecialchars($product['name']); ?>
-                            </h3>
-                            <p class="text-sm text-gray-600 mt-2">
-                                <?php echo htmlspecialchars($product['description']); ?>
-                            </p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+            <?php foreach ($products as $product): ?>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="flex items-center justify-center p-4">
+                    <img src="<?php echo htmlspecialchars($product['image']); ?>"
+                        alt="<?php echo htmlspecialchars($product['name']); ?>" class="h-48 w-36 object-cover">
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <?php echo htmlspecialchars($product['name']); ?>
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-2">
+                        <?php echo htmlspecialchars($product['description']); ?>
+                    </p>
+                </div>
+            </div>
+            <?php endforeach; ?>
             <?php endif; ?>
         </div>
     </div>
 
     <!-- Add Items Section -->
     <div id="catagoryadditems" class="flex-1 p-6 md:p-9 hidden">
-  <h1>Add items</h1>
+
+        <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Borrow a Product</h2>
+
+            <form action="borrowProcess.php" method="POST" class="space-y-5">
+                <div>
+                    <label for="name" class="block font-medium text-gray-700">Product Name:</label>
+                    <input type="text" id="name" name="name" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <div>
+                    <label for="description" class="block font-medium text-gray-700">Description:</label>
+                    <textarea id="description" name="description" rows="3" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400"></textarea>
+                </div>
+                <div>
+                    <label for="email" class="block font-medium text-gray-700">Email Address:</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+                </div>
+
+
+                <div>
+                    <label for="quantity" class="block font-medium text-gray-700">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" min="1" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <div>
+                    <label for="return_date" class="block font-medium text-gray-700">Return Date:</label>
+                    <input type="date" id="return_date" name="return_date" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <button type="submit" id="showPopup"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all">
+                    Show Success
+                </button>
+
+
+            </form>
+        </div>
     </div>
 
     <!-- Add Collection Section -->
     <div id="catagoryaddcollection" class="flex-1 p-6 md:p-9 hidden">
-        <h1>Add Collection Section</h1>
+    <form action="return_product.php" method="POST" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-2xl font-bold text-center mb-6">Return Borrowed Product</h2>
+
+        <label class="block mb-2 font-medium">Your Name</label>
+        <input type="text" name="name" required class="w-full px-4 py-2 border rounded mb-4">
+
+        <label class="block mb-2 font-medium">Borrow ID</label>
+        <input type="text" name="borrow_id" required class="w-full px-4 py-2 border rounded mb-4">
+
+        <label class="block mb-2 font-medium">Rating (1 to 5)</label>
+        <select name="rating" required class="w-full px-4 py-2 border rounded mb-6">
+            <option value="">Select rating</option>
+            <option value="1">1 ⭐</option>
+            <option value="2">2 ⭐⭐</option>
+            <option value="3">3 ⭐⭐⭐</option>
+            <option value="4">4 ⭐⭐⭐⭐</option>
+            <option value="5">5 ⭐⭐⭐⭐⭐</option>
+        </select>
+
+        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded">
+            Return Product
+        </button>
+    </form>
+
     </div>
 
     <!-- Post Section -->
@@ -173,15 +268,70 @@ $conn->close();
         <h1>Support Section</h1>
     </div>
 
-    <!-- Sair Section -->
-    <div id="catagorysair" class="flex-1 p-6 md:p-9 hidden">
-        <h1>Sair Section</h1>
-    </div>
+    <!-- collection Section -->
+    <div id="catagorycollection" class="flex-1 p-6 md:p-9 hidden">
+        <!-- Search Bar -->
+        <div class="flex flex-col md:flex-row items-center justify-between mb-6">
+            <div class="flex items-center gap-4 mb-4 md:mb-0">
+                <i class='bx bx-search-alt-2 text-3xl p-2 cursor-pointer'></i>
+                <h1 class="text-lg font-semibold">Start looking...</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center justify-center border-2 border-gray-300 rounded-lg gap-1 p-2">
+                    <i class='bx bx-grid-horizontal text-xl'></i>
+                    <p class="text-lg">Preencher</p>
+                </div>
+                <div class="flex items-center justify-center border-2 border-gray-300 rounded-lg gap-1 p-2">
+                    <i class='bx bx-menu-alt-left text-xl'></i>
+                    <p class="text-lg">Qualification</p>
+                </div>
+                <div class="filter flex items-center justify-center bg-cyan-500 rounded-lg gap-1 p-2">
+                    <i class='bx bx-filter text-xl text-white'></i>
+                    <p class="text-lg text-white">Filter</p>
+                </div>
+            </div>
+        </div>
+        <!-- Search Input -->
+        <form action="" method="GET" class="w-full mb-6">
+            <div class="relative">
+                <input id="Titlebooks" name="search"
+                    class="w-full p-4 text-2xl font-bold border border-gray-300 rounded-lg"
+                    placeholder="Search your books" value="<?php echo htmlspecialchars($search); ?>" />
+                <button type="submit" class="absolute right-4 top-4 text-3xl cursor-pointer text-gray-500">
+                    <i class='bx bx-search-alt-2'></i>
+                </button>
+            </div>
+        </form>
 
-    <script src="library-page.js">
-      
-        
-    </script>
+        <!-- Product Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <?php if (empty($collection)): ?>
+            <p class="text-center text-gray-600 col-span-full">No products found.</p>
+            <?php else: ?>
+            <?php foreach ($collection as $product): ?>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="flex items-center justify-center p-4">
+                    <img src="<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>"
+                        alt="<?php echo htmlspecialchars($product['name'] ?? 'Unknown'); ?>"
+                        class="h-48 w-36 object-cover">
+                </div>
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold text-gray-800">
+                        <?php echo htmlspecialchars($product['product_name']?? 'No Name') ; ?>
+                    </h3>
+                    <p class="text-sm text-gray-600 mt-2">
+                        <?php echo htmlspecialchars($product['description'] ?? ''); ?>
+                    </p>
+                </div>
+            </div>
+            <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+
+        <script src="library-page.js">
+
+
+        </script>
 </body>
 
 </html>

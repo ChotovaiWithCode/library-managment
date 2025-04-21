@@ -50,14 +50,50 @@ function toggleCategoryDetails(category) {
         // Remove the 'active' class from all list items
         const allItems = document.querySelectorAll('.Add_items');
         allItems.forEach(item => item.classList.remove('active','font-bold', 'text-black'));
-        console.log(hello)
+       
 
         // Add the 'active' class to the clicked list item
         clickedItem.classList.add('active','font-bold', 'text-black');
-        console.log(he)
+        
     }
 
+//popup success
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const showBtn = document.getElementById('showPopup');
+        const closeBtn = document.getElementById('closePopup');
+        const overlay = document.getElementById('popupOverlay');
+        const popup = document.getElementById('popup');
+        const checkmark = document.getElementById('checkmark');
+
+        // Show popup
+        showBtn.addEventListener('click', () => {
+            overlay.classList.remove('hidden');
+            
+            // Trigger animation
+            setTimeout(() => {
+                popup.classList.remove('scale-95', 'opacity-0');
+                popup.classList.add('scale-100', 'opacity-100');
+                
+                // Animate checkmark
+                checkmark.style.strokeDasharray = '24';
+                checkmark.style.strokeDashoffset = '24';
+                checkmark.style.animation = 'draw 0.6s ease-out forwards';
+            }, 10);
+        });
+
+        // Close popup
+        closeBtn.addEventListener('click', () => {
+            popup.classList.remove('scale-100', 'opacity-100');
+            popup.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                // Reset checkmark animation
+                checkmark.style.animation = 'none';
+            }, 300);
+        });
+    });
 
 
 // for searchbar

@@ -18,11 +18,13 @@
             </div>
             <!-- Nav Items -->
             <div class="items h-full w-full md:w-[855px] flex flex-col md:flex-row items-center justify-end space-y-2 md:space-y-0 md:space-x-4">
-                <button class="text-xl mx-[15px]">Contact</button>
-                <button class="text-xl mx-[15px] h-[40px] md:h-full w-full md:w-[200px] bg-black rounded-full text-white">
+                <button class="text-xl mx-[15px] disabled:">Contact</button>
+                <button class="text-xl mx-[15px] h-[40px] md:h-full w-full md:w-[200px] bg-black rounded-full text-white"
+                onclick="window.location.href='Seassionstart.php'";>
                     Start Session
                 </button>
-                <button class="text-xl mx-[15px] h-[40px] md:h-full w-full md:w-[200px] bg-black rounded-full text-white">
+                <button class="text-xl mx-[15px] h-[40px] md:h-full w-full md:w-[200px] bg-black rounded-full text-white"
+                onclick="window.location.href='registrationform.php'";>
                     Register yourself
                 </button>
             </div>
