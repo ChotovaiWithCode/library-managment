@@ -3,58 +3,55 @@ session_start();
 include('database.php');
 
 // Step 1: Get POST data
-$name = $_POST['name'];
+$full_name = $_POST['full_name'];
+$phone = $_POST['phone'];
 $email = $_POST['email'];
-$quantityToBorrow = (int) $_POST['quantity'];
+$product_name = $_POST['books_name'];
+$quantity = (int) $_POST['quantity'];
 $return_date = $_POST['return_date'];
 $borrow_date = date("Y-m-d");
-$borrow_id = 'BRW-' . strtoupper(substr(md5(uniqid()), 0, 8)); // Generate unique borrow ID
+$borrow_id = 'BRW-' . strtoupper(substr(md5(uniqid()), 0, 8));
 
-// Step 2: Get product info
-$getProduct = "SELECT * FROM products WHERE name = '$name'";
-$productResult = $conn->query($getProduct);
+// Step 2: Fetch product info
+$getProduct = "SELECT * FROM products WHERE books_name = '$product_name'";
+$productResult = mysqli_query($conn, $getProduct);
 
-if ($productResult->num_rows > 0) {
-    $product = $productResult->fetch_assoc();
-    $currentQty = (int) $product['quantity'];
-    $productID = $product['Products_ID'];
+if (mysqli_num_rows($productResult) > 0) {
+    $product = mysqli_fetch_assoc($productResult);
+
+    $available_qty = (int)$product['quantity'];
+    $product_id = $product['Products_ID'];
     $image = $product['image'];
     $description = $product['description'];
 
-    if ($currentQty >= $quantityToBorrow) {
-        $newQty = $currentQty - $quantityToBorrow;
-        $conn->query("UPDATE products SET quantity = $newQty WHERE Products_ID = $productID");
+    if ($available_qty >= $quantity) {
+        $new_qty = $available_qty - $quantity;
 
-        if ($newQty < 1) {
-            $conn->query("DELETE FROM products WHERE Products_ID = $productID");
-
-            // // Insert into admin table with borrow ID
-            // $conn->query("INSERT INTO admin (image, name, description, quantity, borrow_date, return_date, email, borrow_id)
-            //               VALUES ('$image', '$name', '$description', $quantityToBorrow, '$borrow_date', '$return_date', '$email', '$borrow_id')");
-
-            // Insert into transactions
-        //     $conn->query("INSERT INTO transactions (image, product_name, description, quantity, borrow_date, return_date, email, borrow_id)
-        //                   VALUES ('$image', '$name', '$description', $quantityToBorrow, '$borrow_date', '$return_date', '$email', '$borrow_id')");
-
-        //     // Now show success popup
-        //     $conn->close();
-        //     include('success_popup.php'); // Create this file
-        //     exit;
+        // Update quantity or delete if none left
+        if ($new_qty > 0) {
+            mysqli_query($conn, "UPDATE products SET quantity = $new_qty WHERE Products_ID = $product_id");
+        } else {
+            mysqli_query($conn, "DELETE FROM products WHERE Products_ID = $product_id");
         }
 
-         // Insert into admin table with borrow ID
-         $conn->query("INSERT INTO admin (image, name, description, quantity, borrow_date, return_date, email, borrow_id)
-         VALUES ('$image', '$name', '$description', $quantityToBorrow, '$borrow_date', '$return_date', '$email', '$borrow_id')");
+        // Insert into admin table
+        $insertAdmin = "INSERT INTO admin (image, full_name, description, quantity, books_name, borrow_date, return_date, phone, email, borrow_id)
+                        VALUES ('$image', '$full_name', '$description', $quantity, '$product_name', '$borrow_date', '$return_date', '$phone', '$email', '$borrow_id')";
+        mysqli_query($conn, $insertAdmin);
 
-        // Partial borrow success (quantity left > 0)
-        $conn->query("INSERT INTO transactions (image, product_name, description, quantity, borrow_date, return_date, email, borrow_id)
-                      VALUES ('$image', '$name', '$description', $quantityToBorrow, '$borrow_date', '$return_date', '$email', '$borrow_id')");
-        $conn->close();
-        include('success_popup.php'); // Still show popup
+        // Insert into transactions table
+        $insertTrans = "INSERT INTO transactions (image, full_name, description, quantity, books_name, borrow_date, return_date, phone, email, borrow_id)
+                        VALUES ('$image', '$full_name', '$description', $quantity, '$product_name', '$borrow_date', '$return_date', '$phone', '$email', '$borrow_id')";
+        mysqli_query($conn, $insertTrans);
+
+        mysqli_close($conn);
+        include('success_popup.php');
         exit;
+
     } else {
         echo "❌ Not enough quantity available.";
     }
+
 } else {
     echo "❌ Product not found.";
 }

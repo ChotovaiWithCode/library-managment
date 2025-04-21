@@ -11,7 +11,7 @@ include('database.php');
 
 // Search filter
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%'  LIMIT 8";
+$sql = "SELECT * FROM products WHERE books_name LIKE '%$search%' OR description LIKE '%$search%'  LIMIT 8";
 $result = $conn->query($sql);
 
 
@@ -24,7 +24,7 @@ if ($result->num_rows > 0) {
 
 // collection Search filter
 $search = isset($_GET['search']) ? $_GET['search'] : '';
-$collections = "SELECT * FROM transactions WHERE product_name LIKE '%$search%' OR description LIKE '%$search%'  LIMIT 8";
+$collections = "SELECT * FROM transactions WHERE books_name LIKE '%$search%' OR description LIKE '%$search%'  LIMIT 8";
 $collresult = $conn->query($collections);
 $collection = [];
 
@@ -73,12 +73,12 @@ $conn->close();
                 Library
             </li>
             <li class="list-item w-[200px] h-[30px] cursor-pointer transition-all duration-300 relative"
-                onclick="activateItem(this);toggleCategoryDetails('additems');">
-                Add Items
+                onclick="activateItem(this);toggleCategoryDetails('orderbooks');">
+                Orderbooks
             </li>
             <li class="list-item w-[200px] h-[30px] cursor-pointer transition-all duration-300 relative"
-                onclick="activateItem(this);toggleCategoryDetails('addcollection');">
-                Add Collection
+                onclick="activateItem(this);toggleCategoryDetails('returnbooks');">
+                Returnbooks
             </li>
             <li class="list-item w-[200px] h-[30px] cursor-pointer transition-all duration-300 relative"
                 onclick="activateItem(this);toggleCategoryDetails('post');">
@@ -157,12 +157,18 @@ $conn->close();
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <div class="flex items-center justify-center p-4">
                     <img src="<?php echo htmlspecialchars($product['image']); ?>"
-                        alt="<?php echo htmlspecialchars($product['name']); ?>" class="h-48 w-36 object-cover">
+                        alt="<?php echo htmlspecialchars($product['books_name']); ?>" class="h-48 w-36 object-cover">
                 </div>
                 <div class="p-4">
                     <h3 class="text-lg font-semibold text-gray-800">
-                        <?php echo htmlspecialchars($product['name']); ?>
+                        <?php echo htmlspecialchars($product['books_name']); ?>
+                        
                     </h3>
+                    <h1 class="text-lg font-semibold italic underline text-gray-800">
+                        Rating :
+                    <?php echo htmlspecialchars($product['rating']) ; ?>
+                    </h1>
+                    
                     <p class="text-sm text-gray-600 mt-2">
                         <?php echo htmlspecialchars($product['description']); ?>
                     </p>
@@ -173,84 +179,127 @@ $conn->close();
         </div>
     </div>
 
-    <!-- Add Items Section -->
-    <div id="catagoryadditems" class="flex-1 p-6 md:p-9 hidden">
+    <!-- order Section -->
+    <div id="catagoryorderbooks" class="flex-1  p-6 md:p-9 hidden">
 
-        <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Borrow a Product</h2>
+        <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Book Order Form</h2>
+            <div class="line bg-gray-600 h-1 w-full"></div>
 
             <form action="borrowProcess.php" method="POST" class="space-y-5">
-                <div>
-                    <label for="name" class="block font-medium text-gray-700">Product Name:</label>
-                    <input type="text" id="name" name="name" required
+
+                <!-- Full Name -->
+                <div class=" my-7">
+                    <label for="full_name" class="block font-medium text-gray-700">Full Name:</label>
+                    <input type="text" id="full_name" name="full_name" required
                         class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
                 </div>
 
-                <div>
-                    <label for="description" class="block font-medium text-gray-700">Description:</label>
-                    <textarea id="description" name="description" rows="3" required
-                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400"></textarea>
-                </div>
-                <div>
+                <!-- Email -->
+                <div class=" my-7">
                     <label for="email" class="block font-medium text-gray-700">Email Address:</label>
                     <input type="email" id="email" name="email" required
                         class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
                 </div>
 
+                <!-- Phone Number -->
+                <div class=" my-7">
+                    <label for="phone" class="block font-medium text-gray-700">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+                </div>
 
-                <div>
+                <!-- Product Name -->
+                <div class=" my-7">
+                    <label for="product_name" class="block font-medium text-gray-700">Books Name:</label>
+                    <input type="text" id="product_name" name="books_name" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <!-- Quantity -->
+                <div class=" my-7">
                     <label for="quantity" class="block font-medium text-gray-700">Quantity:</label>
                     <input type="number" id="quantity" name="quantity" min="1" required
                         class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
                 </div>
 
-                <div>
+                <!-- Return Date -->
+                <div class=" my-7">
                     <label for="return_date" class="block font-medium text-gray-700">Return Date:</label>
                     <input type="date" id="return_date" name="return_date" required
                         class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
                 </div>
 
-                <button type="submit" id="showPopup"
-                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all">
-                    Show Success
-                </button>
+                <div class=" my-7">
+                    <label for="description" class="block font-medium text-gray-700">Description:</label>
+                    <textarea id="description" name="description" rows="3" required
+                        class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400"></textarea>
+                </div>
 
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition-all w-full">
+                    Submit Order
+                </button>
 
             </form>
         </div>
     </div>
 
     <!-- Add Collection Section -->
-    <div id="catagoryaddcollection" class="flex-1 p-6 md:p-9 hidden">
-    <form action="return_product.php" method="POST" class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold text-center mb-6">Return Borrowed Product</h2>
+    <div id="catagoryreturnbooks" class="flex-1 p-6 md:p-9 hidden">
+        <form action="return_product.php" method="POST" class=" p-8 bg-white rounded-lg  w-full max-w-3xl m-auto mt-7">
+            <h2 class="text-2xl font-bold text-center mb-6">Book Return Form</h2>
+            <div class="line bg-gray-600 h-1 w-full"></div>
 
-        <label class="block mb-2 font-medium">Your Name</label>
-        <input type="text" name="name" required class="w-full px-4 py-2 border rounded mb-4">
+            <div class=" my-6">
+                <label for="email" class="block font-medium text-gray-700">Email Address:</label>
+                <input type="email" id="email" name="email" required
+                    class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+            </div>
 
-        <label class="block mb-2 font-medium">Borrow ID</label>
-        <input type="text" name="borrow_id" required class="w-full px-4 py-2 border rounded mb-4">
+            <!-- Phone Number -->
+            <div class=" my-6">
+                <label class="block mb-2 font-medium">Borrow ID</label>
+                <input type="text" name="borrow_id" required class="w-full px-4 py-2 border rounded mb-4">
+            </div>
 
-        <label class="block mb-2 font-medium">Rating (1 to 5)</label>
-        <select name="rating" required class="w-full px-4 py-2 border rounded mb-6">
-            <option value="">Select rating</option>
-            <option value="1">1 ⭐</option>
-            <option value="2">2 ⭐⭐</option>
-            <option value="3">3 ⭐⭐⭐</option>
-            <option value="4">4 ⭐⭐⭐⭐</option>
-            <option value="5">5 ⭐⭐⭐⭐⭐</option>
-        </select>
+            <!-- books Name -->
+            <div class=" my-6">
+                <label for="product_name" class="block font-medium text-gray-700">Books Name:</label>
+                <input type="text" id="product_name" name="books_name" required
+                    class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+            </div>
 
-        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded">
-            Return Product
-        </button>
-    </form>
+            <!-- Quantity -->
+            <div class=" my-6">
+                <label for="quantity" class="block font-medium text-gray-700">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" min="1" required
+                    class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-400">
+            </div>
+
+
+
+            <label class="block mb-2 font-medium">Rating (1 to 5)</label>
+            <select name="rating" required class="w-full px-4 py-2 border rounded mb-6">
+                <option value="">Select rating</option>
+                <option value="1">1 ⭐</option>
+                <option value="2">2 ⭐⭐</option>
+                <option value="3">3 ⭐⭐⭐</option>
+                <option value="4">4 ⭐⭐⭐⭐</option>
+                <option value="5">5 ⭐⭐⭐⭐⭐</option>
+            </select>
+
+            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 rounded">
+                Return Product
+            </button>
+        </form>
 
     </div>
 
     <!-- Post Section -->
     <div id="catagorypost" class="flex-1 p-6 md:p-9 hidden">
-        <h1>Post Section</h1>
+
     </div>
 
     <!-- Controle Section -->
@@ -312,12 +361,13 @@ $conn->close();
             <div class="bg-white rounded-lg shadow-md overflow-hidden">
                 <div class="flex items-center justify-center p-4">
                     <img src="<?php echo htmlspecialchars($product['image'] ?? 'default.jpg'); ?>"
-                        alt="<?php echo htmlspecialchars($product['name'] ?? 'Unknown'); ?>"
+                        alt="<?php echo htmlspecialchars($product['books_name'] ?? 'Unknown'); ?>"
                         class="h-48 w-36 object-cover">
                 </div>
                 <div class="p-4">
                     <h3 class="text-lg font-semibold text-gray-800">
-                        <?php echo htmlspecialchars($product['product_name']?? 'No Name') ; ?>
+                        <?php echo htmlspecialchars($product['books_name']?? 'No Name') ; ?>
+                       
                     </h3>
                     <p class="text-sm text-gray-600 mt-2">
                         <?php echo htmlspecialchars($product['description'] ?? ''); ?>
