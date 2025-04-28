@@ -47,6 +47,13 @@ if (mysqli_num_rows($checkAdmin) > 0) {
         AND borrow_id = '$borrow_id' 
         AND email = '$email'
     ");
+    // Step 3: Delete the record from transaction table
+    mysqli_query($conn, "
+        DELETE FROM transactions 
+        WHERE books_name = '$books_name' 
+        AND borrow_id = '$borrow_id' 
+        AND email = '$email'
+    ");
 
     include('successReturn.php');
     exit;

@@ -29,7 +29,7 @@ if (mysqli_num_rows($productResult) > 0) {
 
         // Update quantity or delete if none left
         if ($new_qty > 0) {
-            mysqli_query($conn, "UPDATE products SET quantity = $new_qty WHERE Products_ID = $product_id");
+            mysqli_query($conn, "UPDATE products SET quantity = $new_qty, borrow_date = NOW()  WHERE Products_ID = $product_id");
         } else {
             mysqli_query($conn, "DELETE FROM products WHERE Products_ID = $product_id");
         }

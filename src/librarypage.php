@@ -369,6 +369,10 @@ $conn->close();
                         <?php echo htmlspecialchars($product['books_name']?? 'No Name') ; ?>
                        
                     </h3>
+                    <h1 class="text-lg font-semibold italic underline text-gray-800">
+                        Order date :
+                    <?php echo htmlspecialchars($product['borrow_date'])??'' ; ?>
+                    </h1>
                     <p class="text-sm text-gray-600 mt-2">
                         <?php echo htmlspecialchars($product['description'] ?? ''); ?>
                     </p>
