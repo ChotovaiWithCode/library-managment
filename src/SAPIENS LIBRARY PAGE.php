@@ -1,167 +1,110 @@
-<!-- <?php
-include('database.php');
-
-$sql = "SELECT * FROM products";
-$result = $conn->query($sql);
-
-$products = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $products[] = $row;
-    }
-}
-
-// Search filter
-$search = isset($_GET['search']) ? $_GET['search'] : '';
-$sql = "SELECT * FROM products WHERE name LIKE '%$search%' OR description LIKE '%$search%'";
-$result = $conn->query($sql);
-
-$products = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $products[] = $row;
-    }
-}
-
-// Close connection
-$conn->close();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sapiens Library</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Add Items - Library</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
-<body class="bg-gray-100 flex flex-col md:flex-row">
-
-    <!-- Left Part -->
-    <div id="catagoryItem" class="bg-gray-200 p-4 md:p-10 w-full md:w-64 lg:w-72 h-auto md:h-screen">
-        <h1 class="text-3xl font-bold mt-4 mb-8 text-left">BOOKS</h1>
-        <ul class="space-y-3 text-lg text-gray-500">
-            <li id="libraryItem" class="list-item cursor-pointer transition-all duration-300 active" onclick="toggleCategoryDetails('library')">
-                Library
-            </li>
-            <li class="list-item cursor-pointer transition-all duration-300" onclick="activateItem(this)">
-                Add Items
-            </li>
-            <li class="list-item cursor-pointer transition-all duration-300" onclick="activateItem(this)">
-                Add Collection
-            </li>
-            <li class="list-item cursor-pointer transition-all duration-300" onclick="activateItem(this)">
-                Post
-            </li>
-            <li class="list-item cursor-pointer transition-all duration-300" onclick="activateItem(this)">
-                Controle
-            </li>
+<body class="bg-gray-100 font-sans">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-lg">
+      <div class="p-6 text-2xl font-bold">SAPIENS</div>
+      <nav class="mt-10">
+        <ul class="space-y-2">
+          <li><a href="#" class="block py-2.5 px-4 hover:bg-gray-200">Library</a></li>
+          <li><a href="#" class="block py-2.5 px-4 bg-blue-100 text-blue-700 font-semibold">Add Items</a></li>
+          <li><a href="#" class="block py-2.5 px-4 hover:bg-gray-200">Add Collection</a></li>
+          <li><a href="#" class="block py-2.5 px-4 hover:bg-gray-200">Publish</a></li>
+          <li><a href="#" class="block py-2.5 px-4 hover:bg-gray-200">Dashboard</a></li>
+          <li><a href="#" class="block py-2.5 px-4 hover:bg-gray-200">Settings</a></li>
+          <li><a href="#" class="block py-2.5 px-4 hover:bg-gray-200">Support</a></li>
+          <li><a href="#" class="block py-2.5 px-4 hover:bg-gray-200">Logout</a></li>
         </ul>
-        <ul class="mt-8 space-y-3 text-lg text-gray-500">
-            <li class="list-item cursor-pointer transition-all duration-300" onclick="activateItem(this)">
-                Settings
-            </li>
-            <li class="list-item cursor-pointer transition-all duration-300" onclick="activateItem(this)">
-                Support
-            </li>
-            <li class="list-item cursor-pointer transition-all duration-300" onclick="activateItem(this)">
-                Sair
-            </li>
-        </ul>
-    </div>
+      </nav>
+    </aside>
 
-    <!-- Right Part -->
-    <div id="catagorydetails" class="flex-1 p-4 md:p-9">
-        <!-- Search Bar -->
-        <div class="flex flex-col md:flex-row items-center justify-between mb-6">
-            <div class="flex items-center gap-4 mb-4 md:mb-0">
-                <i class='bx bx-search-alt-2 text-3xl p-2 cursor-pointer'></i>
-                <h1 class="text-lg font-semibold">Start looking...</h1>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="flex items-center justify-center border-2 border-gray-300 rounded-lg gap-1 p-2">
-                    <i class='bx bx-grid-horizontal text-xl'></i>
-                    <p class="text-lg">Preencher</p>
-                </div>
-                <div class="flex items-center justify-center border-2 border-gray-300 rounded-lg gap-1 p-2">
-                    <i class='bx bx-menu-alt-left text-xl'></i>
-                    <p class="text-lg">Qualification</p>
-                </div>
-                <div class="flex items-center justify-center bg-green-500 rounded-lg gap-1 p-2">
-                    <i class='bx bx-filter text-xl text-white'></i>
-                    <p class="text-lg text-white">Filter</p>
-                </div>
-            </div>
+    <!-- Main content -->
+    <main class="flex-1 p-10">
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold mb-8">Add Items</h1>
+        <div class="flex items-center gap-2">
+          <span>User</span>
+          <div class="w-8 h-8 bg-cyan-400 rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- Top Tabs -->
+      <div class="mb-6">
+        <nav class="flex space-x-6 text-lg font-semibold">
+          <a href="#" class="text-blue-600 border-b-2 border-blue-600 pb-2">Search</a>
+          <a href="#" class="text-gray-400 pb-2">Manual Entry</a>
+          <a href="#" class="text-gray-400 pb-2">Import CSV</a>
+        </nav>
+      </div>
+
+      <!-- Select Collection -->
+      <div class="bg-white p-6 rounded shadow-md space-y-6">
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Select Collection</label>
+          <select class="w-full border-gray-300 rounded-lg">
+            <option>Harry Potter Collection</option>
+          </select>
+          <p class="text-gray-500 text-sm mt-1">Choose the collection you are adding items to.</p>
         </div>
 
-        <!-- Search Input -->
-        <form action="" method="GET" class="w-full mb-6">
-            <div class="relative">
-                <input id="Titlebooks" name="search"
-                    class="w-full p-4 text-2xl font-bold border border-gray-300 rounded-lg"
-                    placeholder="Search your books" value="<?php echo htmlspecialchars($search); ?>">
-                <button type="submit" class="absolute right-4 top-4 text-3xl cursor-pointer">
-                    <i class='bx bx-search-alt-2'></i>
-                </button>
-            </div>
-        </form>
-
-        <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <?php if (empty($products)): ?>
-                <p class="text-center text-gray-600 col-span-full">No products found.</p>
-            <?php else: ?>
-                <?php foreach ($products as $product): ?>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div class="flex items-center justify-center p-4">
-                            <img src="<?php echo htmlspecialchars($product['image']); ?>"
-                                alt="<?php echo htmlspecialchars($product['name']); ?>"
-                                class="h-48 w-36 object-cover">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-800">
-                                <?php echo htmlspecialchars($product['name']); ?>
-                            </h3>
-                            <p class="text-sm text-gray-600 mt-2">
-                                <?php echo htmlspecialchars($product['description']); ?>
-                            </p>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
+        <!-- Select Item Type -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Select Item Type</label>
+          <div class="flex items-center space-x-6">
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="type" checked>
+              <span>Book</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="type">
+              <span>Movie</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="type">
+              <span>Music</span>
+            </label>
+            <label class="flex items-center space-x-2">
+              <input type="radio" name="type">
+              <span>Video Game</span>
+            </label>
+          </div>
+          <p class="text-gray-500 text-sm mt-1">The type of item you are adding.</p>
         </div>
-    </div>
 
-    <script>
-        // Function to toggle the visibility of the category details section
-        function toggleCategoryDetails(category) {
-            const categoryDetails = document.getElementById('catagorydetails');
+        <!-- Search -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Search for Books</label>
+          <div class="flex">
+            <input type="text" placeholder="Harry Potter and The Cursed Child" class="flex-1 border border-gray-300 rounded-l-lg p-2">
+            <button class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 rounded-r-lg">Search</button>
+          </div>
+          <p class="text-gray-500 text-sm mt-1">Search by ISBN or keyword. ISBN search will automatically add an item.</p>
+        </div>
+      </div>
 
-            if (category === 'library') {
-                categoryDetails.classList.remove('hidden'); // Show the section
-            } else {
-                categoryDetails.classList.add('hidden'); // Hide the section
-            }
-        }
+      <!-- Book Result -->
+      <div class="flex bg-white mt-8 rounded shadow-md overflow-hidden">
+        <img src="https://images-na.ssl-images-amazon.com/images/I/51N9aPa2DLL._SX331_BO1,204,203,200_.jpg" alt="Harry Potter" class="w-48 object-cover">
+        <div class="p-6">
+          <h2 class="text-2xl font-bold mb-2">HARRY POTTER AND THE CURSED CHILD</h2>
+          <p class="text-gray-700 font-semibold mb-2">J. K. Rowling, Jack Thorne, John Tiffany</p>
+          <p class="text-gray-600 mb-2">2017 | Pages: 352</p>
+          <p class="text-gray-600 mb-4">ISBN: 9780751565362 ISBN10: 0751565369</p>
+          <p class="text-gray-600 text-sm mb-4">
+            It has never been easy being Harry Potter, and it isn’t much easier now that he is an overworked employee of the Ministry of Magic, a husband, and a father of three school-age
+        </p>
+          <button class="bg-cyan-500 hover:bg-cyan-600 text-white px-4 py-2 rounded-lg">Adicionar Item</button>
+        </div>
+      </div>
 
-        // Function to activate list items
-        function activateItem(item) {
-            const listItems = document.querySelectorAll('.list-item');
-            listItems.forEach(li => li.classList.remove('active'));
-            item.classList.add('active');
-        }
-
-        // Automatically activate the "Library" item on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            const libraryItem = document.getElementById('libraryItem');
-            activateItem(libraryItem); // Set "Library" as active
-            toggleCategoryDetails('library'); // Show the category details section
-        });
-    </script>
-    <script src="library-page.js"></script>
+    </main>
+  </div>
 </body>
-
-</html> -->
+</html>

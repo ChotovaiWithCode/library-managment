@@ -1,4 +1,4 @@
-// Function to activate list items
+// activate list items
 function activateItem(item) {
     const listItems = document.querySelectorAll('.list-item');
     listItems.forEach(li => li.classList.remove('active', 'translate-x-5', 'font-bold', 'text-black', 'bg-gray-100'));

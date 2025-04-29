@@ -80,8 +80,10 @@ $conn->close();
                 onclick="activateItem(this);toggleCategoryDetails('returnbooks');">
                 Returnbooks
             </li>
-            <li class="list-item w-[200px] h-[30px] cursor-pointer transition-all duration-300 relative"
-                onclick="activateItem(this);toggleCategoryDetails('post');">
+            <li class="list-item w-[200px] h-[30px] cursor-pointer transition-all duration-300 relative disabled:"
+            >
+            <!-- onclick="activateItem(this);toggleCategoryDetails('post');" -->
+                
                 Post
             </li>
             <li class="list-item w-[200px] h-[30px] cursor-pointer transition-all duration-300 relative"
@@ -149,12 +151,14 @@ $conn->close();
         </form>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        onclick="activateItem(this);toggleCategoryDetails('post');">
             <?php if (empty($products)): ?>
             <p class="text-center text-gray-600 col-span-full">No products found.</p>
             <?php else: ?>
             <?php foreach ($products as $product): ?>
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <div id="bookdetails" class="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer"
+             >
                 <div class="flex items-center justify-center p-4">
                     <img src="<?php echo htmlspecialchars($product['image']); ?>"
                         alt="<?php echo htmlspecialchars($product['books_name']); ?>" class="h-48 w-36 object-cover">
@@ -298,7 +302,61 @@ $conn->close();
     </div>
 
     <!-- Post Section -->
-    <div id="catagorypost" class="flex-1 p-6 md:p-9 hidden">
+    <div id="catagorypost" class="flex-1 p-6 md:p-9 hidden disabled:">
+        <h1 class="text-3xl font-bold">BOOKS DETAILS</h1>
+        
+    <div  class=" bg-white mt-8 rounded-lg h-full overflow-hidden"
+    >
+    <!-- Product Image Section -->
+    <div class="w-1/6 mt-7 items-center">
+        <img id="detailImage" src="<?php echo htmlspecialchars($product['image']); ?>" 
+            alt="<?php echo htmlspecialchars($product['books_name']); ?>" 
+            class="w-full h-80 object-cover rounded-l-lg">
+    </div>
+
+    <!-- Product Information Section -->
+    <div class="p-8 w-2/3">
+        <h2 id="detailName" class="text-3xl font-extrabold text-gray-900 mb-4">
+        <?php echo htmlspecialchars($product['books_name']); ?>
+        </h2>
+        <p id="detailWriter" class="text-xl font-semibold text-gray-800 mb-3">
+        <strong>Writer:</strong> 
+        <?php echo htmlspecialchars($product['writer_name']); ?>
+        </p>
+        <p id="detailDatePages" class="text-gray-600 mb-2">
+            <strong >Published:</strong> <?php echo htmlspecialchars($product['publish_date']); ?>
+             | <strong >Pages:</strong> <?php echo htmlspecialchars($product['page']); ?>
+        </p>
+        <p class="text-gray-600 mb-2">
+            <strong>ISBN:</strong> 9780751565362 | <strong>ISBN10:</strong> 0751565369
+        </p>
+
+        <div class="mb-6">
+            <p class="text-gray-700 text-lg mb-4">
+                It has never been easy being Harry Potter, and it isn’t much easier now that he is an overworked employee of the Ministry of Magic, a husband, and a father of three school-age children...
+            </p>
+            <p class="text-gray-700 text-lg">
+                Harry Potter is a man struggling to live up to the legacy of his past, and the mysterious dark force looming over him may be his greatest challenge yet.
+            </p>
+        </div>
+
+        <div class="flex justify-between items-center">
+            <div>
+                <p id="detailPrice"  class="text-gray-800 font-semibold text-xl">Price: <span class="text-lg text-cyan-600"><?php echo htmlspecialchars($product['price']); ?> $</span></p>
+            </div>
+           <div class="cart-btn flex justify-between items-center gap-5">
+           <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-lg focus:outline-none"
+           onclick="activateItem(this);toggleCategoryDetails('orderbooks');">
+                Order books
+            </button>
+            <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-lg focus:outline-none"
+            onclick="activateItem(this);toggleCategoryDetails('returnbooks');">
+                Return books
+            </button>
+           </div>
+        </div>
+    </div>
+</div>
 
     </div>
 
