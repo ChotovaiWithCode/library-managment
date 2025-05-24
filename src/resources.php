@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -65,7 +66,7 @@ $conn->close();
 </head>
 
 <body class="bg-blue-50 font-sans text-blue-900">
-     <!-- Mobile Header -->
+  <!-- Mobile Header -->
     <header class="md:hidden bg-white p-4 flex items-center justify-between border-b">
         <h1 class="text-xl font-semibold">DEF Library</h1>
         <button id="menuToggle" class="w-8 h-8  rounded">
