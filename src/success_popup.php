@@ -1,10 +1,37 @@
+<?php
+session_start();
+require 'database.php'; // make sure this file defines $conn (mysqli connection)
+
+$name = "User"; // default
+
+if (isset($_SESSION['user_id'])) {
+    $userId = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("SELECT name FROM member_info WHERE member_id = ?");
+    if ($stmt) {
+        $stmt->bind_param("s", $userId);
+        $stmt->execute();
+        $stmt->bind_result($fetchedName);
+
+        if ($stmt->fetch()) {
+            $name = htmlspecialchars($fetchedName);
+        }
+
+        $stmt->close();
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Success</title>
+    <title>Status</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 flex items-center justify-center h-screen">
 
     <!-- Popup Overlay -->
@@ -22,11 +49,14 @@
             <!-- Text -->
             <div class="text-center">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">Success!</h3>
-                <p class="text-gray-600 mb-2">Your book has been borrowed successfully.</p>
-                <p class="text-lg font-semibold text-green-600 mb-4">
-                    Borrow ID: <?= htmlspecialchars($borrow_id) ?>
+                <p class="text-gray-600 mb-2">
+                    Thanks, <?php echo $name; ?>.<br>
+                    You are able to read this book.
                 </p>
-                <a href="librarypage.php" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg inline-block">
+
+
+                <a href="bookscollection.php"
+                    class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg inline-block">
                     Continue
                 </a>
             </div>
@@ -34,4 +64,5 @@
     </div>
 
 </body>
+
 </html>

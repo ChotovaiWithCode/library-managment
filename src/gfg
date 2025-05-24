@@ -1,0 +1,29 @@
+<table class="w-full text-sm ">
+                    <tbody class="bg-white">
+                        <?php if ($result->num_rows > 0): ?>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                        <tr class="border-b">
+                            <td class="px-3 py-2 border"><?php echo htmlspecialchars($row['id']); ?></td>
+                            <td class="px-3 py-2 border"><?php echo htmlspecialchars($row['name']); ?></td>
+                            <td class="px-3 py-2 border"><?php echo htmlspecialchars($row['status']); ?></td>
+                        </tr>
+                        <?php endwhile; ?>
+                        <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="text-center py-3 text-gray-500">No members found.</td>
+                        </tr>
+                        <?php endif; ?>
+                    </tbody>
+                    <tbody>
+                      
+                        <!-- Add more rows as needed -->
+                        <tr id="seeMoreRow" class="bg-white">
+                            <td colspan="3" class="text-center py-4">
+                                <button
+                                    class="px-4 py-2 bg-blue-900 text-white rounded flex items-center gap-2 mx-auto">
+                                    See more
+                                    <i class='bx bx-right-arrow-alt'></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>

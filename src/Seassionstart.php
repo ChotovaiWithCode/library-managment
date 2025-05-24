@@ -68,8 +68,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </div>
 
   <!-- Form Section -->
-  <div class="h-auto md:h-[825px] w-full flex items-center justify-center px-4 py-8 md:py-0">
-    <div class="h-auto md:h-[420px] w-full md:w-[460px] bg-white p-8 rounded-lg shadow-2xl max-w-md">
+ 
       <h1 class="text-3xl font-bold mb-6 text-center">Session Start</h1>
       <form action="Seassionstart.php" method="POST">
         <!-- Email Field -->

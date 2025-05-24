@@ -1,12 +1,19 @@
-<?php
 
+
+
+
+<?php
 session_start();
 
-// Check if user is registered
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
-    header("Location: Seassionstart.php"); // Redirect to your registration page
-    exit();
-}
+// if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+//     header("Location: login.php");
+//     exit();
+// }
+ 
+
+
+
+
 include('database.php');
 
 // Search filter
