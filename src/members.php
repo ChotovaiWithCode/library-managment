@@ -20,45 +20,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $checkEmail->execute();
         $result = $checkEmail->get_result();
 
-        if ($result->num_rows > 0) {
-            // Check if email already used in member_info
-            $checkMember = $conn->prepare("SELECT email FROM member_info WHERE email = ?");
-            $checkMember->bind_param("s", $email);
-            $checkMember->execute();
-            $memberResult = $checkMember->get_result();
+        // if ($result->num_rows > 0) {
+        //     // Check if email already used in member_info
+        //     $checkMember = $conn->prepare("SELECT email FROM member_info WHERE email = ?");
+        //     $checkMember->bind_param("s", $email);
+        //     $checkMember->execute();
+        //     $memberResult = $checkMember->get_result();
 
-            if ($memberResult->num_rows > 0) {
-             echo "<script>
-                    alert('Email is already used for a member.');
-                    window.location.href = 'members.php';
-                </script>";
-                exit;
-            } else {
-               // Generate a random member_id
-                  $member_id = "MEM" . date("Ymd") . rand(1000, 9999);
+        //     if ($memberResult->num_rows > 0) {
+        //      echo "<script>
+        //             alert('Email is already used for a member.');
+        //             window.location.href = 'members.php';
+        //         </script>";
+        //         exit;
+        //     } else {
+        //        // Generate a random member_id
+        //           $member_id = "MEM" . date("Ymd") . rand(1000, 9999);
 
-                  // Prepare insert query
-                  $stmt = $conn->prepare("INSERT INTO member_info (member_id, name, place, phone, address, email, membership_date, remark) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-                  $stmt->bind_param("ssssssss", $member_id, $name, $place, $phone, $address, $email, $membership_date, $remark);
+        //           // Prepare insert query
+        //           $stmt = $conn->prepare("INSERT INTO member_info (member_id, name, place, phone, address, email, membership_date, remark) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        //           $stmt->bind_param("ssssssss", $member_id, $name, $place, $phone, $address, $email, $membership_date, $remark);
 
-                  // Execute insert
-                  if ($stmt->execute()) {
+        //           // Execute insert
+        //           if ($stmt->execute()) {
                      
-                      echo "<script>alert('Member added successfully.');</script>";
-                  } else {
-                      echo "<script>alert('Failed to add member: " . $stmt->error . "');</script>";
-                  }
-            }
-        } else {
-            echo "<script>alert('Email doesn\\'t match any registered login info.');</script>";
+        //               echo "<script>alert('Member added successfully.');</script>";
+        //           } else {
+        //               echo "<script>alert('Failed to add member: " . $stmt->error . "');</script>";
+        //           }
+        //     }
+        // } else {
+        //     echo "<script>alert('Email doesn\\'t match any registered login info.');</script>";
             
 
-            header('members.php');
+//             header('members.php');
             
-        }
-    } elseif (isset($_POST['cancel'])) {
-        echo "<script>window.location.href='members.php';</script>";
-        exit;
+//         }
+//     } elseif (isset($_POST['cancel'])) {
+//         echo "<script>window.location.href='members.php';</script>";
+//         exit;
     }
 
 } 
@@ -313,16 +313,16 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
                     <tbody class="bg-white" id="memberTableBody">
                         <?php if ($result->num_rows > 0): ?>
                         <?php
-        $rowIndex = 0;
-        while ($row = $result->fetch_assoc()):
-            $rowIndex++;
-            $statusClass = match ($row['status']) {
-                'active' => 'bg-green-100 text-green-600',
-                'inactive' => 'bg-red-100 text-red-600',
-                default => 'bg-gray-100 text-gray-600',
-            };
-            $displayClass = ($rowIndex > 3) ? 'hidden extra-row' : ''; 
-        ?>
+                        $rowIndex = 0;
+                        while ($row = $result->fetch_assoc()):
+                            $rowIndex++;
+                            $statusClass = match ($row['status']) {
+                                'active' => 'bg-green-100 text-green-600',
+                                'inactive' => 'bg-red-100 text-red-600',
+                                default => 'bg-gray-100 text-gray-600',
+                            };
+                            $displayClass = ($rowIndex > 3) ? 'hidden extra-row' : ''; 
+                        ?>
                         <tr class="border-b <?php echo $displayClass; ?>">
                             <td class="px-3 py-2 border"><?php echo htmlspecialchars($row['member_id']); ?></td>
                             <td class="px-3 py-2 border"><?php echo htmlspecialchars($row['name']); ?></td>
@@ -535,7 +535,7 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
             if (expanded) {
                 row.classList.add('hidden');
             } else {
-                if (index < 2) row.classList.remove('hidden'); // show 2 more (rows 4 and 5)
+                if (index < 20) row.classList.remove('hidden'); // show 2 more (rows 4 and 5)
             }
         });
 
@@ -600,7 +600,7 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
 
     function calculateResult() {
         const quantity = parseInt(document.getElementById("quantity").value, 10);
-        const pricePerMonth = 10; // Example rate
+        const pricePerMonth = 100; // Example rate
         const result = isNaN(quantity) ? '' : `$${quantity * pricePerMonth}`;
         document.getElementById("result").value = result;
     }

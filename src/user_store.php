@@ -25,8 +25,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
     <header class="md:hidden bg-white p-4 flex items-center justify-between border-b">
         <h1 class="text-xl font-semibold">DEF Library</h1>
         <button id="menuToggle" class="w-8 h-8  rounded">
-            <a href="#"
-                class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
+            <a href="#" class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
                 <i class='bx bxs-book-reader text-4xl'></i>
             </a>
         </button>
@@ -40,13 +39,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
         <div class="p-2 flex flex-col items-center space-y-6 mt-10">
             <a href="welcome.php"
                 class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
-                <i class='bx  bx-book-bookmark text-4xl'></i> 
+                <i class='bx  bx-book-bookmark text-4xl'></i>
                 <span class="text-sm font-medium">Library</span>
             </a>
 
             <a href="my_dashboard.php"
                 class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
-                 <i class='bx bx-share-alt text-4xl'></i>
+                <i class='bx bx-share-alt text-4xl'></i>
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
 
@@ -55,7 +54,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
                 <i class='bx bx-book-open text-4xl'></i>
                 <span class="text-sm font-medium">Resources</span>
             </a>
-             <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
+            <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
 
             <a href="bookscollection.php"
                 class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
@@ -87,97 +86,109 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
     <!-- Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 md:hidden"></div>
 
-    
-<div class="flex">
-    <!-- Sidebar (Desktop - Fixed) -->
-    <div class="hidden md:fixed sm:fixed md:flex w-20 h-screen bg-white border-r flex-col items-center py-4 space-y-10">
-        <div class="w-8 h-8 rounded flex flex-col items-center justify-center mt-6">
-            <a href="" class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
-                <i class='bx bxs-book-reader text-4xl'></i>
-            </a>
-        </div>
 
-        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+    <div class="flex">
+        <!-- Sidebar (Desktop - Fixed) -->
+        <div
+            class="hidden md:fixed sm:fixed md:flex w-20 h-screen bg-white border-r flex-col items-center py-4 space-y-10">
+            <div class="w-8 h-8 rounded flex flex-col items-center justify-center mt-6">
+                <a href="" class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
+                    <i class='bx bxs-book-reader text-4xl'></i>
+                </a>
+            </div>
+
+            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
             <!-- Admin-visible links -->
             <div class="w-8 h-8 rounded flex flex-col items-center justify-center mt-6">
-            <a href="welcome.php" class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
-                <i class='bx  bx-book-bookmark text-4xl'></i> 
-                 <span class="text-sm font-medium">Library</span>
-            </a>
-        </div>
+                <a href="welcome.php"
+                    class="flex flex-col items-center text-center space-y-1 hover:text-blue-600 transition">
+                    <i class='bx  bx-book-bookmark text-4xl'></i>
+                    <span class="text-sm font-medium">Library</span>
+                </a>
+            </div>
 
-            <a href="my_dashboard.php" class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
+            <a href="my_dashboard.php"
+                class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
                 <i class='bx bx-share-alt text-4xl'></i>
                 <span class="text-sm font-medium">Dashboard</span>
             </a>
 
-            <a href="resources.php" class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
+            <a href="resources.php"
+                class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
                 <i class='bx bx-book-open text-4xl'></i>
                 <span class="text-sm font-medium">Resources</span>
             </a>
 
-        <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
+            <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
             <!-- User-visible links -->
-            <a href="members.php" class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
+            <a href="members.php"
+                class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
                 <i class='bx bx-group text-4xl'></i>
                 <span class="text-sm font-medium">Member</span>
             </a>
 
-            <a href="bookscollection.php" class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
+            <a href="bookscollection.php"
+                class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
                 <i class='bx bxs-book text-4xl'></i>
                 <span class="text-sm font-medium">Books</span>
             </a>
 
-            <a href="user_store.php" class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
+            <a href="user_store.php"
+                class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
                 <i class='bx bx-store text-4xl'></i>
                 <span class="text-sm font-medium">Store</span>
             </a>
-        <?php endif; ?>
+            <?php endif; ?>
 
-        <!-- Common to both roles -->
-        <a href="settings.php" class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
-            <i class='bx bx-cog text-4xl'></i>
-            <span class="text-sm font-medium">Settings</span>
-        </a>
+            <!-- Common to both roles -->
+            <a href="settings.php"
+                class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-blue-600 transition">
+                <i class='bx bx-cog text-4xl'></i>
+                <span class="text-sm font-medium">Settings</span>
+            </a>
 
-        <a href="logout.php" class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-red-600 transition">
-            <i class='bx bx-log-out text-4xl'></i>
-            <span class="text-sm font-medium">Logout</span>
-        </a>
+            <a href="logout.php"
+                class="w-8 h-8 rounded flex flex-col items-center justify-center hover:text-red-600 transition">
+                <i class='bx bx-log-out text-4xl'></i>
+                <span class="text-sm font-medium">Logout</span>
+            </a>
+        </div>
     </div>
-</div>
-        <!-- Main Content -->
-       <main class="flex-1 p-6 md:ml-20">
-    <h2 class="text-3xl font-bold mb-6">MY Store</h2>
+    <!-- Main Content -->
+    <main class="flex-1 p-6 md:ml-20">
+        <h2 class="text-3xl font-bold mb-6">MY Store</h2>
 
-    <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-6 p-4 md:ml-20">
-        <!-- Sort Dropdown -->
-        <form method="GET" id="filterForm" class="flex items-center gap-2">
-            <select name="sort" id="option" class="border p-2 rounded"
-                onchange="document.getElementById('filterForm').submit()">
-                <option value="">All books</option>
-                <option value="most_borrowed" <?= isset($_GET['sort']) && $_GET['sort'] === 'most_borrowed' ? 'selected' : '' ?>>Most Borrowed</option>
-                <option value="newest" <?= isset($_GET['sort']) && $_GET['sort'] === 'newest' ? 'selected' : '' ?>>Newest</option>
-            </select>
-        </form>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-center gap-6 p-4 md:ml-20">
+            <!-- Sort Dropdown -->
+            <form method="GET" id="filterForm" class="flex items-center gap-2">
+                <select name="sort" id="option" class="border p-2 rounded"
+                    onchange="document.getElementById('filterForm').submit()">
+                    <option value="">All books</option>
+                    <option value="most_borrowed"
+                        <?= isset($_GET['sort']) && $_GET['sort'] === 'most_borrowed' ? 'selected' : '' ?>>Most Borrowed
+                    </option>
+                    <option value="newest" <?= isset($_GET['sort']) && $_GET['sort'] === 'newest' ? 'selected' : '' ?>>
+                        Newest</option>
+                </select>
+            </form>
 
-        <!-- Keyword (Optional) -->
-        <div class="flex items-center gap-2">
-            <label for="keywords" class="text-sm font-medium">Keywords:</label>
-            <input id="keywords" type="text" class="border p-2 rounded" placeholder="Search keywords">
+            <!-- Keyword (Optional) -->
+            <div class="flex items-center gap-2">
+                <label for="keywords" class="text-sm font-medium">Keywords:</label>
+                <input id="keywords" type="text" class="border p-2 rounded" placeholder="Search keywords">
+            </div>
+
+            <!-- Quantity (Optional UI) -->
+            <input type="number" placeholder="Qty" class="border p-2 rounded w-20" />
+
+            <!-- Search Button -->
+            <button class="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-800">Search</button>
         </div>
 
-        <!-- Quantity (Optional UI) -->
-        <input type="number" placeholder="Qty" class="border p-2 rounded w-20" />
+        <h2 class="text-2xl font-semibold mb-6">All books</h2>
 
-        <!-- Search Button -->
-        <button class="bg-blue-900 text-white px-4 py-2 rounded hover:bg-blue-800">Search</button>
-    </div>
-
-    <h2 class="text-2xl font-semibold mb-6">All books</h2>
-
-    <div id="bookGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <?php
+        <div id="bookGrid" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <?php
         include 'database.php';
 
         // Pagination
@@ -209,14 +220,14 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
         if ($result->num_rows > 0):
             while ($row = $result->fetch_assoc()):
         ?>
-        <div class="gap-3 flex items-center justify-center">
-            <div>
-                <img src="<?= htmlspecialchars($row['image_url']) ?>" alt="Book" class="h-48 mx-auto mb-4" />
-            </div>
-            <div>
-                <!-- Rating Stars -->
-                <p class="text-lg">
-                    <?php
+            <div class="gap-3 flex items-center justify-center">
+                <div>
+                    <img src="<?= htmlspecialchars($row['image_url']) ?>" alt="Book" class="h-48 mx-auto mb-4" />
+                </div>
+                <div>
+                    <!-- Rating Stars -->
+                    <p class="text-lg">
+                        <?php
                     $rating = (int)$row['rating'];
                     for ($i = 1; $i <= 5; $i++) {
                         echo $i <= $rating
@@ -224,23 +235,49 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
                             : '<i class="fas fa-star text-gray-400"></i>';
                     }
                     ?>
-                </p>
-                <h3 class="font-semibold text-xl"><?= htmlspecialchars($row['title']) ?></h3>
-                <p class="font-semibold text-sm text-gray-400">Total Qty:
-                    <span><?= $row['total_quantity'] ?></span>
-                </p>
-                <p class="font-semibold text-sm text-gray-400">Available Qty:
-                    <span><?= $row['available_quantity'] ?></span>
-                </p>
+                    </p>
+                    <h3 class="font-semibold text-xl"><?= htmlspecialchars($row['title']) ?></h3>
+                    <p class="font-semibold text-sm text-gray-400">Total Qty:
+                        <span><?= $row['total_quantity'] ?></span>
+                    </p>
+                    <p class="font-semibold text-sm text-gray-400">Available Qty:
+                        <span><?= $row['available_quantity'] ?></span>
+                    </p>
 
-                <!-- Add to Cart -->
-                <form method="POST" action="add_to_cart.php">
-                    <input type="hidden" name="books_id" value="<?= $row['books_id'] ?>" />
-                    <button type="submit" class="block mt-2 bg-blue-700 text-white px-4 py-1 rounded">Add to cart</button>
-                </form>
+                    <!-- Add to Cart -->
+                    <!-- Return Book Button -->
+                    <button onclick="openRatingModal(<?= $row['books_id'] ?>)"
+                        class="bg-blue-700 text-white px-4 py-1 rounded">
+                        Return Book
+                    </button>
+
+                    <!-- Rating Modal -->
+                    <div id="ratingModal<?= $row['books_id'] ?>"
+                        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+                            <h2 class="text-xl font-semibold mb-2">Rate this book</h2>
+                            <p class="mb-4 text-gray-600">Thanks for reading! Please rate the book.</p>
+
+                            <div class="flex justify-center mb-4 text-yellow-500 text-2xl"
+                                id="stars<?= $row['books_id'] ?>">
+                                <!-- Stars will be generated by JS -->
+                            </div>
+
+                            <form method="POST" action="return_book.php">
+                                <input type="hidden" name="books_id" value="<?= $row['books_id'] ?>">
+                                <input type="hidden" name="rating" id="ratingInput<?= $row['books_id'] ?>">
+                                <button type="submit" class="bg-green-600 text-white px-4 py-1 rounded">Submit</button>
+                                <button type="button" class="ml-2 bg-gray-400 text-white px-4 py-1 rounded"
+                                    onclick="closeRatingModal(<?= $row['books_id'] ?>)">
+                                    Cancel
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-        <?php
+            <?php
             endwhile;
         else:
             echo "<p>No books found.</p>";
@@ -248,24 +285,28 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
 
         $conn->close();
         ?>
-    </div>
+        </div>
 
-    <!-- Pagination -->
-    <div class="flex justify-center mt-6 space-x-2">
-        <a href="<?= ($page > 1) ? '?page=' . ($page - 1) . '&sort=' . ($_GET['sort'] ?? '') : '#' ?>"
-            class="px-3 py-1 border rounded <?= ($page == 1) ? 'pointer-events-none opacity-50' : '' ?>">&lt;</a>
+       
+       
 
-        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+
+        <!-- Pagination -->
+        <div class="flex justify-center mt-6 space-x-2">
+            <a href="<?= ($page > 1) ? '?page=' . ($page - 1) . '&sort=' . ($_GET['sort'] ?? '') : '#' ?>"
+                class="px-3 py-1 border rounded <?= ($page == 1) ? 'pointer-events-none opacity-50' : '' ?>">&lt;</a>
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
             <a href="?page=<?= $i ?>&sort=<?= $_GET['sort'] ?? '' ?>"
                 class="px-3 py-1 border rounded <?= ($page == $i) ? 'bg-blue-700 text-white' : '' ?>">
                 <?= $i ?>
             </a>
-        <?php endfor; ?>
+            <?php endfor; ?>
 
-        <a href="<?= ($page < $totalPages) ? '?page=' . ($page + 1) . '&sort=' . ($_GET['sort'] ?? '') : '#' ?>"
-            class="px-3 py-1 border rounded <?= ($page == $totalPages) ? 'pointer-events-none opacity-50' : '' ?>">&gt;</a>
-    </div>
-</main>
+            <a href="<?= ($page < $totalPages) ? '?page=' . ($page + 1) . '&sort=' . ($_GET['sort'] ?? '') : '#' ?>"
+                class="px-3 py-1 border rounded <?= ($page == $totalPages) ? 'pointer-events-none opacity-50' : '' ?>">&gt;</a>
+        </div>
+    </main>
 
     </div>
 
@@ -284,7 +325,34 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
         sidebar.classList.add("translate-x-full");
         overlay.classList.add("hidden");
     });
+    //    for rating
+    function openRatingModal(bookId) {
+    document.getElementById('ratingModal' + bookId).classList.remove('hidden');
+    renderStars(bookId, 0); // Default unselected
+}
+
+function closeRatingModal(bookId) {
+    document.getElementById('ratingModal' + bookId).classList.add('hidden');
+}
+
+function renderStars(bookId, selectedRating) {
+    const starContainer = document.getElementById('stars' + bookId);
+    const ratingInput = document.getElementById('ratingInput' + bookId);
+    starContainer.innerHTML = '';
+
+    for (let i = 1; i <= 5; i++) {
+        const star = document.createElement('span');
+        star.innerHTML = '&#9733;';
+        star.classList.add(i <= selectedRating ? 'text-yellow-500' : 'text-gray-300', 'cursor-pointer');
+        star.onclick = () => {
+            ratingInput.value = i;
+            renderStars(bookId, i);
+        };
+        starContainer.appendChild(star);
+    }
+}
     </script>
+
 </body>
 
 </html>
