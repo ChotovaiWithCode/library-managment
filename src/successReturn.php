@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+      <link rel="shortcut icon" type="x-icon" href="img/library-managment.png">
     <meta charset="UTF-8">
     <title>Success</title>
     <script src="https://cdn.tailwindcss.com"></script>

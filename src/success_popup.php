@@ -27,6 +27,7 @@ if (isset($_SESSION['user_id'])) {
 <html lang="en">
 
 <head>
+      <link rel="shortcut icon" type="x-icon" href="img/library-managment.png">
     <meta charset="UTF-8">
     <title>Status</title>
     <script src="https://cdn.tailwindcss.com"></script>

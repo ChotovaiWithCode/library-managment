@@ -105,6 +105,7 @@ $email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
 
 <head>
     <meta charset="UTF-8" />
+      <link rel="shortcut icon" type="x-icon" href="img/library-managment.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Member Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
